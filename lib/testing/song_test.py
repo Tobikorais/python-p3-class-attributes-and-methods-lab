@@ -9,6 +9,10 @@ Song.artist_count = {}
 class TestSong:
     '''Class "Song" in song.py'''
 
+    def setup_method(self):
+        """Reset the Song class attributes before each test."""
+        Song.reset()
+
     Song("99 Problems", "Jay Z", "Rap")
     Song("Halo", "Beyonce", "Pop")
     Song("Smells Like Teen Spirit", "Nirvana", "Rock")
@@ -50,3 +54,37 @@ class TestSong:
         assert(Song.artist_count["Beyonce"] == 1)
         assert(Song.artist_count["Nirvana"] == 1)
         assert(Song.artist_count["Hall and Oates"] == 2)
+
+    def test_counts_total_songs(self):
+        """Test that total_songs is updated correctly."""
+        Song("Song 1", "Artist 1", "Genre 1")
+        Song("Song 2", "Artist 2", "Genre 2")
+        assert Song.total_songs == 2
+
+    def test_tracks_genres(self):
+        """Test that genres are tracked correctly."""
+        Song("Song 1", "Artist 1", "Rap")
+        Song("Song 2", "Artist 2", "Pop")
+        assert "Rap" in Song.genres
+        assert "Pop" in Song.genres
+
+    def test_tracks_artists(self):
+        """Test that artists are tracked correctly."""
+        Song("Song 1", "Jay Z", "Rap")
+        Song("Song 2", "Artist 2", "Pop")
+        assert "Jay Z" in Song.artists
+        assert "Artist 2" in Song.artists
+
+    def test_counts_songs_by_genre(self):
+        """Test that genre_count is updated correctly."""
+        Song("Song 1", "Artist 1", "Rap")
+        Song("Song 2", "Artist 2", "Rap")
+        Song("Song 3", "Artist 3", "Pop")
+        assert Song.genre_count["Rap"] == 2
+        assert Song.genre_count["Pop"] == 1
+
+    def test_counts_songs_by_artist(self):
+        """Test that artist_count is updated correctly."""
+        Song("Song 1", "Jay Z", "Rap")
+        Song("Song 2", "Jay Z", "Pop")
+        assert Song.artist_count["Jay Z"] == 2
